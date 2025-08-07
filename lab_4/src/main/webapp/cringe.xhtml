@@ -107,7 +107,24 @@
         <!-- Таблица данных -->
         <h:panelGroup id="history" styleClass="block-history">
             <div class="gui-element" id="data-block">
-                <h:dataTable styleClass="history" id="historyTable" value="#{controller.points}" var="point"
+                <!-- Статистика -->
+                <h:dataTable styleClass="stats-table" value="#{statsController}" var="stats" rendered="#{not empty controller.points}">
+                    <h:column>
+                        <f:facet name="header">Total points</f:facet>
+                        #{statsController.getTotalPoints()}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Hits</f:facet>
+                        #{statsController.getHitPoints()}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Misses</f:facet>
+                        #{statsController.getMissPoints()}
+                    </h:column>
+                </h:dataTable>
+
+                <!-- Основные данные точек -->
+                <h:dataTable styleClass="history" value="#{controller.points}" var="point"
                              rendered="#{not empty controller.points}">
                     <h:column>
                         <f:facet name="header">X</f:facet>
@@ -122,26 +139,21 @@
                         #{point.r}
                     </h:column>
                     <h:column>
-                        <f:facet name="header"> exec time </f:facet>
+                        <f:facet name="header">exec time</f:facet>
                         #{point.time} nanoseconds
                     </h:column>
                     <h:column>
-                        <f:facet name="header"> time </f:facet>
+                        <f:facet name="header">time</f:facet>
                         #{point.date}
                     </h:column>
                     <h:column>
-                        <f:facet name="header"> result </f:facet>
+                        <f:facet name="header">result</f:facet>
                         #{point.condition}
                     </h:column>
                 </h:dataTable>
 
-                <!-- Сообщение, если нет данных -->
-                <!--                <h:outputText styleClass="main" value="Нет данных для отображения. Потыкайте кнопочки"-->
-                <!--                              rendered="#{empty controller.points}" />-->
-
                 <h:outputText styleClass="main" value="#{msg.pusto}"
                               rendered="#{empty controller.points}"/>
-
             </div>
         </h:panelGroup>
         <h:messages/>
