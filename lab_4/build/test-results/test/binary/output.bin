@@ -1,9 +1,9 @@
 
 /=== Инициализация AreaChecker ===
 #Тестируемые точки:
-dp1: cringe.lab3.entity.Point@5b7a7f33 (ожидается: не попадает в область)
-_p2: cringe.lab3.entity.Point@2dfaea86 (ожидается: попадает в область)
-_p3: cringe.lab3.entity.Point@15888343 (ожидается: попадает в область)
+dp1: cringe.lab3.entity.Point@6e2829c7 (ожидается: не попадает в область)
+_p2: cringe.lab3.entity.Point@3feb2dda (ожидается: попадает в область)
+_p3: cringe.lab3.entity.Point@6a8658ff (ожидается: попадает в область)
 
 Запуск AreaChecker...
 

@@ -14,23 +14,22 @@ public class LocaleFilter implements Filter {
             throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) req;
 
-        // Получаем язык из куки
+        // Получаем язык из куки или используем en по умолчанию
         String lang = "en";
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if ("lang".equals(cookie.getName())) {
                     lang = cookie.getValue();
-                    System.out.println(lang);
                     break;
                 }
             }
         }
 
-        System.out.println("eeeeeeh((");
-
-        // Устанавливаем атрибут для JSP
+        // Устанавливаем атрибут запроса
         request.setAttribute("userLocale", lang);
+
+        // Продолжаем цепочку фильтров
         chain.doFilter(request, res);
     }
 }
