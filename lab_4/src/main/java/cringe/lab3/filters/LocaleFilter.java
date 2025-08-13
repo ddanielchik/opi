@@ -1,4 +1,4 @@
-package cringe.lab3.bean;
+package cringe.lab3.filters;
 
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
@@ -14,7 +14,6 @@ public class LocaleFilter implements Filter {
             throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) req;
 
-        // Получаем язык из куки или используем en по умолчанию
         String lang = "en";
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
@@ -26,10 +25,7 @@ public class LocaleFilter implements Filter {
             }
         }
 
-        // Устанавливаем атрибут запроса
         request.setAttribute("userLocale", lang);
-
-        // Продолжаем цепочку фильтров
         chain.doFilter(request, res);
     }
 }

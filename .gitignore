@@ -1,0 +1,49 @@
+# Билд-артефакты
+build/
+out/
+bin/
+*.war
+*.ear
+
+# Логи и временные файлы
+*.log
+*.tmp
+*.bak
+*.swp
+*.orig
+
+# Системные файлы
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+
+# Gradle
+.gradle/
+gradle-app.setting
+
+# Maven (если остались артефакты)
+target/
+dependency-reduced-pom.xml
+
+# Тесты и отчеты
+test-results/
+build/reports/
+
+# Локальные настройки
+*.properties
+*.cfg
+
+# Node.js (если используется)
+node_modules/
+npm-debug.log
+
+# Исключения для Gradle Wrapper (это нужно коммитить!)
+!gradle/wrapper/gradle-wrapper.jar
+!gradlew
+!gradlew.bat

@@ -6,6 +6,7 @@ import cringe.lab3.entity.Point;
 import cringe.lab3.service.ServiceManager;
 import cringe.lab3.service.ServicesName;
 
+import cringe.lab3.test.StatsMBeanImpl;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import jakarta.enterprise.context.SessionScoped;
@@ -29,6 +30,9 @@ public class PointController implements Serializable {
     private DBManager dbManager;
 
     @Inject
+    StatsMBeanImpl statsMBean;
+
+    @Inject
     public PointController() {}
 
     @PostConstruct
@@ -42,6 +46,7 @@ public class PointController implements Serializable {
         List<Point> points = coordinateHandler.createPoints(selectedCheckBoxes);
 
         serviceManager.execute(ServicesName.AREA_CHECKER, points);
+        statsMBean.update(points);
         serviceManager.execute(ServicesName.SAVE, points);
     }
 

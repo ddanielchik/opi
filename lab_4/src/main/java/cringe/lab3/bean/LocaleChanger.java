@@ -20,14 +20,11 @@ public class LocaleChanger implements Serializable {
     public void init() {
         String lang = getCookieValue("lang");
 
-        // Используем Locale по умолчанию, если куки нет
         this.locale = lang != null ? new Locale(lang) : Locale.getDefault();
 
-        // Альтернативный вариант - использовать локаль из запроса
         // this.locale = FacesContext.getCurrentInstance().getExternalContext().getRequestLocale();
     }
 
-    // Остальные методы без изменений
     public void setEnglish() {
         setLocale("en");
     }
@@ -40,7 +37,6 @@ public class LocaleChanger implements Serializable {
         this.locale = new Locale(lang);
         FacesContext context = FacesContext.getCurrentInstance();
 
-        // Устанавливаем локаль только если ViewRoot существует
         if (context.getViewRoot() != null) {
             context.getViewRoot().setLocale(locale);
         }
