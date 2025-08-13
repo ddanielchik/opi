@@ -4,7 +4,10 @@
     flex-direction: row;
 }
 
-.home, button , input[type="submit"], input[type="button"]{
+.home, button , input[type="submit"], input[type="button"],
+.tools button.ui-button,
+.tools input[type="submit"].ui-button,
+.tools input[type="button"].ui-button {
     display: inline-block;
     width: 100px;
     height: 100px;
@@ -12,7 +15,7 @@
     color: black;
     border-radius: 15px;
     border: none;
-    font-size: 16pt;
+    font-size: 56pt;
     cursor: pointer;
     transition: background-color 0.3s, color 0.3s, filter 0.3s;
     margin-left: 5px;
@@ -21,6 +24,8 @@
     text-align: center;
     position: relative;
     background-size: cover;
+    will-change: filter;
+    backface-visibility: hidden;
 }
 
 .random-btn {
@@ -48,8 +53,11 @@
     margin: 0;
 }
 
-button:hover::after {
-    opacity: 1;
+.percent-btn {
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    line-height: 100px;
+    font-size: 100px;
 }
 
 button::after, input[type="submit"]::after, input[type="button"]::after{

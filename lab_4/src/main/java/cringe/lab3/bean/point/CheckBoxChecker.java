@@ -1,4 +1,4 @@
-package cringe.lab3.bean;
+package cringe.lab3.bean.point;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.SessionScoped;

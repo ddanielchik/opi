@@ -29,10 +29,20 @@ dependencies {
     implementation("jakarta.platform:jakarta.jakartaee-api:${properties["jakartaeeVersion"]}")
     testImplementation("org.junit.jupiter:junit-jupiter-api:${properties["junitVersion"]}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${properties["junitVersion"]}")
+    testImplementation("org.mockito:mockito-junit-jupiter:${properties["mockitoVersion"]}")
 }
 
 tasks.test {
     useJUnitPlatform()
+
+    testLogging {
+        events("passed", "skipped", "failed", "standardOut", "standardError")
+        showExceptions = true
+        showCauses = true
+        showStackTraces = true
+        showStandardStreams = true
+    }
+
     reports {
         junitXml.required.set(true)
         html.required.set(true)

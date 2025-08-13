@@ -17,7 +17,21 @@
     <title> cringe </title>
 </h:head>
 
+<h:outputScript library="primefaces" name="core/core.js" />
+
 <h:body>
+
+    <p:dialog widgetVar="missDialog"
+              header="Три промаха подряд!"
+              modal="false"
+              draggable="false"
+              resizable="false"
+              position="10,10">
+        <h:panelGroup>
+            <p>Вы сделали 3 промаха подряд!</p>
+            это какой-то ужас :(
+        </h:panelGroup>
+    </p:dialog>
 
     <!-- Ошибки -->
     <div class="error" id="error">
@@ -37,7 +51,6 @@
 
                 <!-- Значение X -->
                 <h:outputText styleClass="mini-title" value="#{msg.x}"/>
-                <!--                <h:outputLabel styleClass="mini-title" value="Значение X"/>-->
                 <div class="block-x">
                     <ui:repeat value="#{checkbox.values}" var="value" varStatus="status">
                         <h:outputLabel styleClass="label-checkbox">
@@ -74,8 +87,8 @@
 
                 <!-- Кнопки -->
                 <div class="tools">
-                    <button class="random-btn" type="button" name="random form" onclick="random()"/>
-                    <button class="clear-btn" type="button" name="clear form" onclick="clearForm()"/>
+                    <h:commandButton class="random-btn" type="button" name="random form" onclick="random()"/>
+                    <h:commandButton class="clear-btn" type="button" name="clear form" onclick="clearForm()"/>
 
                     <h:commandButton styleClass="delete-btn" type="button" onclick="clearPoints()">
                         <f:ajax execute="@form" render=":history" listener="#{controller.delete()}"/>
@@ -86,14 +99,30 @@
                         <f:ajax execute="@form" render=":history"
                                 onevent="handleAjaxEvent"/>
                     </h:commandButton>
-                </div>
 
+                    <p:commandButton value="%"
+                                     update="percentDisplay"
+                                     oncomplete="PF('infoDialog').show()"
+                                     styleClass="percent-btn"
+                                     type="submit"/>
+
+                    <p:dialog widgetVar="infoDialog"
+                              header="Статистика"
+                              position="10,10"
+                              modal="false"
+                              draggable="false"
+                              resizable="false"
+                              onShow="setTimeout(function(){PF('infoDialog').hide()}, 5000)">
+                        <h:panelGroup id="percentDisplay">
+                            #{calculator.getPercents()}%
+                        </h:panelGroup>
+                    </p:dialog>
+                </div>
             </h:form>
 
 
             <!-- График -->
             <div class="myImg">
-                <!--добавить функцию для отправки-->
                 <svg class="mySvg" width="400" height="400" style="border-radius: 15px;">
                     <image href="resources/img/graph.svg" width="400" height="400"/>
                 </svg>
@@ -108,18 +137,18 @@
         <h:panelGroup id="history" styleClass="block-history">
             <div class="gui-element" id="data-block">
                 <!-- Статистика -->
-                <h:dataTable styleClass="stats-table" value="#{statsController}" var="stats" rendered="#{not empty controller.points}">
+                <h:dataTable styleClass="stats-table" value="#{counter}" var="counter">
                     <h:column>
                         <f:facet name="header">Total points</f:facet>
-                        #{statsController.getTotalPoints()}
+                        #{counter.getTotalPoints()}
                     </h:column>
                     <h:column>
                         <f:facet name="header">Hits</f:facet>
-                        #{statsController.getHitPoints()}
+                        #{counter.getHitPoints()}
                     </h:column>
                     <h:column>
                         <f:facet name="header">Misses</f:facet>
-                        #{statsController.getMissPoints()}
+                        #{counter.getMissPoints()}
                     </h:column>
                 </h:dataTable>
 

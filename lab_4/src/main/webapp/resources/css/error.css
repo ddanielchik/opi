@@ -33,3 +33,56 @@ header {
 .close-btn:hover {
     color: #ffcccc;
 }
+
+/* Основной стиль диалога */
+.custom-dialog {
+    background-color: gray !important;
+    border-radius: 5px !important;
+    padding: 0 !important;
+    border: none !important;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2) !important;
+    width: auto !important;
+    max-width: 80vw !important;
+}
+
+/* Заголовок диалога */
+.custom-dialog .ui-dialog-titlebar {
+    background-color: transparent !important;
+    border: none !important;
+    color: white !important;
+    padding: 10px 15px !important;
+    font-size: 3.3vw !important;
+}
+
+.custom-dialog-header {
+    text-align: center !important;
+    margin: 0 !important;
+}
+
+/* Кнопка закрытия */
+.custom-dialog .ui-dialog-titlebar-close {
+    color: white !important;
+    font-size: 30px !important;
+    margin: 0 !important;
+    background: none !important;
+    border: none !important;
+}
+
+.custom-dialog .ui-dialog-titlebar-close:hover {
+    color: #ffcccc !important;
+}
+
+/* Контентная область */
+.custom-dialog-content {
+    padding: 10px !important;
+    color: white !important;
+    position: relative !important;
+}
+
+/* Стиль для процентов */
+.dialog-percent {
+    font-size: 2.5vw !important;
+    text-align: center !important;
+    display: block !important;
+    padding: 15px !important;
+}

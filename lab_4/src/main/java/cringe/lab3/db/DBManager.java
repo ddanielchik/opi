@@ -1,6 +1,7 @@
 package cringe.lab3.db;
 
 import cringe.lab3.entity.Point;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
@@ -8,6 +9,7 @@ import jakarta.persistence.Persistence;
 import java.io.Serializable;
 import java.util.List;
 
+@ApplicationScoped
 public class DBManager implements Serializable, Observer {
 
     private final transient EntityManagerFactory entityManagerFactory;

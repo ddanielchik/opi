@@ -49,5 +49,4 @@ function handleSubmit() {
     }
 }
 
-
 document.addEventListener('DOMContentLoaded', clear)

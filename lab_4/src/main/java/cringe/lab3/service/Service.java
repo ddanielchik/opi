@@ -15,6 +15,10 @@ public abstract class Service implements Subject {
         this.serviceName = serviceName;
     }
 
+    protected Service() {
+        serviceName = null;
+    }
+
     public ServicesName getServiceName() {
         return serviceName;
     }
