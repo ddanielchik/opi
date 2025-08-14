@@ -90,21 +90,22 @@
                     <h:commandButton class="random-btn" type="button" name="random form" onclick="random()"/>
                     <h:commandButton class="clear-btn" type="button" name="clear form" onclick="clearForm()"/>
 
-                    <h:commandButton styleClass="delete-btn" type="button" onclick="clearPoints()">
-                        <f:ajax execute="@form" render=":history" listener="#{controller.delete()}"/>
+                    <h:commandButton styleClass="delete-btn">
+                        <f:ajax execute="@this" render="pointsTable statsTable"
+                                listener="#{controller.delete()}"
+                                onevent="function(data){if(data.status=='success') handleAjaxEvent(data)}"/>
                     </h:commandButton>
 
-                    <h:commandButton styleClass="result" action="#{controller.save()}"
-                                     onclick="return handleSubmit()" type="submit">
-                        <f:ajax execute="@form" render=":history"
-                                onevent="handleAjaxEvent"/>
+                    <h:commandButton styleClass="result" action="#{controller.save()}">
+                        <f:ajax execute="@form" render="pointsTable statsTable"
+                                onevent="function(data){if(data.status=='success') handleAjaxEvent(data)}"/>
                     </h:commandButton>
 
-                    <p:commandButton value="%"
-                                     update="percentDisplay"
+                    <p:commandButton value="%" update="percentDisplay"
+                                     partialSubmit="true"
+                                     action="#{calculator.update()}"
                                      oncomplete="PF('infoDialog').show()"
-                                     styleClass="percent-btn"
-                                     type="submit"/>
+                                     styleClass="percent-btn"/>
 
                     <p:dialog widgetVar="infoDialog"
                               header="Статистика"
@@ -137,7 +138,7 @@
         <h:panelGroup id="history" styleClass="block-history">
             <div class="gui-element" id="data-block">
                 <!-- Статистика -->
-                <h:dataTable styleClass="stats-table" value="#{counter}" var="counter">
+                <h:dataTable id="statsTable" styleClass="stats-table" value="#{counter}" var="counter">
                     <h:column>
                         <f:facet name="header">Total points</f:facet>
                         #{counter.getTotalPoints()}
@@ -153,8 +154,7 @@
                 </h:dataTable>
 
                 <!-- Основные данные точек -->
-                <h:dataTable styleClass="history" value="#{controller.points}" var="point"
-                             rendered="#{not empty controller.points}">
+                <h:dataTable id="pointsTable" styleClass="history" value="#{controller.points}" var="point">
                     <h:column>
                         <f:facet name="header">X</f:facet>
                         #{point.x}
@@ -180,9 +180,6 @@
                         #{point.condition}
                     </h:column>
                 </h:dataTable>
-
-                <h:outputText styleClass="main" value="#{msg.pusto}"
-                              rendered="#{empty controller.points}"/>
             </div>
         </h:panelGroup>
         <h:messages/>

@@ -9,7 +9,6 @@ import org.primefaces.PrimeFaces;
 
 import javax.management.Notification;
 import javax.management.NotificationBroadcasterSupport;
-import java.util.List;
 
 @Named("counter")
 @ApplicationScoped
@@ -20,35 +19,24 @@ public class PointCounter extends NotificationBroadcasterSupport {
     private int consecutiveMisses = 0;
     private long sequenceNumber = 1;
 
-    @Inject
-    private StatsCalculator statsCalculator;
 
-    public synchronized void update(List<Point> points) {
-        if (points == null || points.isEmpty()) return;
+    public synchronized void update(boolean condition) {
+        totalPoints ++;
 
-        totalPoints += points.size();
+        if (condition) {
+            hitPoints++;
+            consecutiveMisses = 0;
+        } else {
+            missPoints++;
+            consecutiveMisses++;
 
-
-
-        for (Point point : points) {
-            System.out.println(point.isCondition());
-
-            if (point.isCondition()) {
-                hitPoints++;
+            if (consecutiveMisses >= 3) {
                 consecutiveMisses = 0;
-            } else {
-                missPoints++;
-                consecutiveMisses++;
 
-                if (consecutiveMisses >= 3) {
-                    consecutiveMisses = 0;
-
-                    sendJmxNotification();
-                    showUiNotification();
-                }
+                sendJmxNotification();
+                showUiNotification();
             }
         }
-        statsCalculator.setPercents(totalPoints, missPoints);
     }
 
     private void sendJmxNotification() {
@@ -71,10 +59,17 @@ public class PointCounter extends NotificationBroadcasterSupport {
         }
     }
 
-    public int getTotalPoints() { return totalPoints; }
-    public int getHitPoints() { return hitPoints; }
-    public int getMissPoints() { return missPoints; }
-    public int getConsecutiveMisses() { return consecutiveMisses; }
+    public int getTotalPoints() {
+        return totalPoints;
+    }
+
+    public int getHitPoints() {
+        return hitPoints;
+    }
+
+    public int getMissPoints() {
+        return missPoints;
+    }
 
     public void drop() {
         totalPoints = 0;
