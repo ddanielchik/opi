@@ -3,24 +3,24 @@ package cringe.lab3.test;
 import cringe.lab3.entity.Point;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.faces.context.FacesContext;
-import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import org.primefaces.PrimeFaces;
 
 import javax.management.Notification;
 import javax.management.NotificationBroadcasterSupport;
+import java.io.Serializable;
 
 @Named("counter")
 @ApplicationScoped
-public class PointCounter extends NotificationBroadcasterSupport {
+public class PointCounter extends NotificationBroadcasterSupport implements CounterMBean, Serializable {
     private int totalPoints = 0;
     private int hitPoints = 0;
     private int missPoints = 0;
     private int consecutiveMisses = 0;
     private long sequenceNumber = 1;
 
-
-    public synchronized void update(boolean condition) {
+    @Override
+    public void update(boolean condition) {
         totalPoints ++;
 
         if (condition) {
@@ -59,18 +59,22 @@ public class PointCounter extends NotificationBroadcasterSupport {
         }
     }
 
+    @Override
     public int getTotalPoints() {
         return totalPoints;
     }
 
+    @Override
     public int getHitPoints() {
         return hitPoints;
     }
 
+    @Override
     public int getMissPoints() {
         return missPoints;
     }
 
+    @Override
     public void drop() {
         totalPoints = 0;
         hitPoints = 0;

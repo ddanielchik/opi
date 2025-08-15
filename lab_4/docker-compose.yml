@@ -1,16 +1,27 @@
 services:
   wildfly:
-    container_name: mini-cringe
-    hostname: localhost
     image: quay.io/wildfly/wildfly:28.0.0.Final-jdk17
     ports:
       - "8080:8080"
-    environment:
-      - JAVA_OPTS=-Djboss.bind.address=0.0.0.0 -Dorg.wildfly.ee.namespace.interop=true
+      - "9990:9990"
+      - "7203:7203"
+    command: >
+      /bin/sh -c "
+      /opt/jboss/wildfly/bin/standalone.sh
+      -b 0.0.0.0
+      -bmanagement 0.0.0.0
+      -Dcom.sun.management.jmxremote
+      -Dcom.sun.management.jmxremote.port=7203
+      -Dcom.sun.management.jmxremote.rmi.port=7203
+      -Dcom.sun.management.jmxremote.ssl=false
+      -Dcom.sun.management.jmxremote.authenticate=false
+      -Djava.rmi.server.hostname=0.0.0.0
+      -Djboss.bind.address=0.0.0.0
+      -Djboss.bind.address.management=0.0.0.0
+      -Dorg.wildfly.management.jmx.port=7203
+      "
     volumes:
       - ./build/libs/lab-2-1.war:/opt/jboss/wildfly/standalone/deployments/app.war
-    extra_hosts:
-      - "lil-star:192.168.31.233"
 
   postgres:
     image: postgres:latest
