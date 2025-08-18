@@ -2,7 +2,6 @@ package cringe.lab3.test;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 
 import javax.management.*;
@@ -12,42 +11,32 @@ import java.lang.management.ManagementFactory;
 public class MBeanActivator {
 
     @Inject
-    Instance<Object> allBeans; // CDI будет инжектить все бины
+    private StatsCalculator statsCalculator;
+
+    @Inject
+    private PointCounter pointCounter;
 
     @PostConstruct
     public void init() {
         try {
             MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
 
-            for (Object bean : allBeans) {
-                if (isMBean(bean)) {
-                    registerMBean(bean, mbs);
-                }
+            ObjectName statsName = new ObjectName("cringe.lab3:type=StatsCalculator");
+            if (!mbs.isRegistered(statsName)) {
+                mbs.registerMBean(statsCalculator, statsName);
+                System.out.println("Registered StatsCalculator MBean");
             }
+
+            ObjectName counterName = new ObjectName("cringe.lab3:type=PointCounter");
+            if (!mbs.isRegistered(counterName)) {
+                mbs.registerMBean(pointCounter, counterName);
+                System.out.println("Registered PointCounter MBean");
+            }
+
         } catch (Exception e) {
             System.err.println("MBean activation failed:");
             e.printStackTrace();
-        }
-    }
-
-    private boolean isMBean(Object bean) {
-        Class<?>[] interfaces = bean.getClass().getInterfaces();
-        for (Class<?> iface : interfaces) {
-            if (iface.isAnnotationPresent(MXBean.class)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private void registerMBean(Object bean, MBeanServer mbs) throws Exception {
-        String domain = bean.getClass().getPackageName();
-        String type = bean.getClass().getSimpleName();
-        ObjectName name = new ObjectName(domain + ":type=" + type);
-
-        if (!mbs.isRegistered(name)) {
-            mbs.registerMBean(bean, name);
-            System.out.println("Registered MBean: " + name);
+            throw new RuntimeException("Failed to initialize MBeans", e);
         }
     }
 }

@@ -31,7 +31,7 @@ public class PointController implements Serializable {
     private transient DBManager dbManager;
 
     @Inject
-    private transient PointCounter pointCounter;
+    private PointCounter pointCounter;
 
     private List<Point> cachedPoints = Collections.emptyList();
     private final ReadWriteLock lock = new ReentrantReadWriteLock();

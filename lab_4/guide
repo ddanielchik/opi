@@ -1,20 +1,30 @@
 гайд по запуску JConsole
 
 1) запустить контейнер
-2) зарегать юзера
- docker exec -it lab_4-wildfly-1 /opt/jboss/wildfly/bin/add-user.sh
-выбирать следующие ответы
-a)
-user
-user123
-yes
-user123
-no
-yes
-3) скачать себе jboss-client.jar чтобы JConsole знал о всех зависимостях и мог болтать с нашим WildFly-ем
- docker cp lab_4-wildfly-1:/opt/jboss/wildfly/bin/client/jboss-client.jar ./jboss-client.jar
-4) запустить JConsole с использованием jboss-client.jar
-    jconsole -J-Djava.class.path=$JAVA_HOME/lib/jconsole.jar:./jboss-client.jar
-5) в открытом окне в input-e указать url до нашего JVM
- service:jmx:remote+http://localhost:9990
-6) заполнить поля name и password в соответствии
+2) скачать себе jboss-client.jar чтобы JConsole знал о всех зависимостях и мог болтать с нашим WildFly-ем
+    docker cp lab_4-wildfly-1:/opt/jboss/wildfly/bin/client/jboss-client.jar ./jboss-client.jar
+3) запустить JConsole с использованием jboss-client.jar
+    jconsole -J-Djava.class.path=./jboss-client.jar
+4) в открытом окне в input-e указать url до нашего JVM
+    service:jmx:remote+http://localhost:9990
+5) заполнить поля name (user) и password (user123)
+
+гайд по запуску VisualVM
+1) скачать VisualVM последней версии
+    brew install sdkman
+    sdk install visualvm 2.2
+    sdk install java 17.0.10-tem
+2) перейти в директорию где находится jboss.client.jar
+3) выполнить эту команду
+    sudo visualvm --jdkhome ~/.sdkman/candidates/java/17.0.10-tem --cp:a ./jboss-client.jar
+4) в верхней панеле ищешь File -> Add JMX Connection
+5) в строке Connection указываешь адрес
+    service:jmx:remote+http://localhost:9990
+6) ставишь галочку на Use security credentials
+    Username: user
+    Password: user123
+7) ставишь галочки на
+    Save security credentials
+    Do not require SSL connection
+
+если все ок то появится куча инфы о нашем приложении со всякими свистелками, мигалками

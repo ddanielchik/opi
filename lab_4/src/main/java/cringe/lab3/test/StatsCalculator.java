@@ -25,7 +25,6 @@ public class StatsCalculator implements CalculatorMBean, Serializable {
     @PostConstruct
     public void init() {
         try {
-            // Регистрация MBean
             MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
             ObjectName name = new ObjectName("cringe.lab3:type=StatsCalculator");
 
@@ -34,7 +33,6 @@ public class StatsCalculator implements CalculatorMBean, Serializable {
                 System.out.println("StatsCalculator MBean registered successfully");
             }
 
-            // Первоначальное обновление данных
             update();
 
         } catch (Exception e) {

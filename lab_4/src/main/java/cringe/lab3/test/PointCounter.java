@@ -1,14 +1,17 @@
 package cringe.lab3.test;
 
-import cringe.lab3.entity.Point;
+import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.faces.context.FacesContext;
 import jakarta.inject.Named;
 import org.primefaces.PrimeFaces;
 
+import javax.management.MBeanServer;
 import javax.management.Notification;
 import javax.management.NotificationBroadcasterSupport;
+import javax.management.ObjectName;
 import java.io.Serializable;
+import java.lang.management.ManagementFactory;
 
 @Named("counter")
 @ApplicationScoped
@@ -18,6 +21,23 @@ public class PointCounter extends NotificationBroadcasterSupport implements Coun
     private int missPoints = 0;
     private int consecutiveMisses = 0;
     private long sequenceNumber = 1;
+
+    @PostConstruct
+    public void init() {
+        try {
+            MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
+            ObjectName name = new ObjectName("cringe.lab3:type=PointCounter");
+
+            if (!mbs.isRegistered(name)) {
+                mbs.registerMBean(this, name);
+                System.out.println("PointCounter MBean registered successfully");
+            }
+        } catch (Exception e) {
+            System.err.println("Error during PointCounter initialization:");
+            e.printStackTrace();
+            throw new RuntimeException("Failed to initialize PointCounter", e);
+        }
+    }
 
     @Override
     public void update(boolean condition) {
