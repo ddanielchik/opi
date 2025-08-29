@@ -17,6 +17,11 @@
 2) перейти в директорию где находится jboss.client.jar
 3) выполнить эту команду
     sudo visualvm --jdkhome ~/.sdkman/candidates/java/17.0.10-tem --cp:a ./jboss-client.jar
+
+    !!!ВАЖНО!!!
+    перед тем как добавить какое либо соединениее тебе надо скачать плагин для работы с MBean.
+    Tools -> Plugins -> Available Plugins -> VisualVM-MBeans -> install
+
 4) в верхней панеле ищешь File -> Add JMX Connection
 5) в строке Connection указываешь адрес
     service:jmx:remote+http://localhost:9990
@@ -28,3 +33,27 @@
     Do not require SSL connection
 
 если все ок то появится куча инфы о нашем приложении со всякими свистелками, мигалками
+
+Но если вдруг ты захочешь воспользоваться профайлером VisualVM то тебе надо запустить
+WildFly локально, для этого скачай эту версию и распакуй её
+1) https://github.com/wildfly/wildfly/releases/download/29.0.1.Final/wildfly-29.0.1.Final.zip
+2) затем через sdkman укажи используемую версию JDK
+sdk use java 17.0.10-tem
+3) скопируй последнюю версию war-ника
+cp opi/lab_4/build/libs/lab-2-1.war ~/Downloads/wildfly-29.0.1.Final/standalone/deployments/app.war
+4) установи необходимые флаги для того чтобы контейнер корректно запустился
+
+export JAVA_OPTS="
+-Dcom.sun.management.jmxremote
+-Dcom.sun.management.jmxremote.port=9910
+-Dcom.sun.management.jmxremote.rmi.port=9910
+-Dcom.sun.management.jmxremote.ssl=false
+-Dcom.sun.management.jmxremote.authenticate=false
+-Djava.rmi.server.hostname=127.0.0.1
+-Djboss.bind.address=0.0.0.0
+-Djboss.bind.address.management=0.0.0.0
+"
+5) запусти wildfly
+ sudo ./standalone.sh -b 0.0.0.0 -bmanagement 0.0.0.0
+
+6) открой VisualVM и кайфуй
